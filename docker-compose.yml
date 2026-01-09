@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      target: local
+    container_name: backend-for-frontend
+
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"     # AMQP
+      - "15672:15672"   # Web UI
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+    name: eventure-network
