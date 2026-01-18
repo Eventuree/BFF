@@ -5,15 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HomePageDTO {
-    private List<EventDto> trendingEvents;
-    private List<CategoryDto> categories;
-    private List<EventDto> events;
-
+public class ProfileSummaryDto {
+    String name;     // firstName + lastName
+    String username;
+    String avatarUrl;
 }
