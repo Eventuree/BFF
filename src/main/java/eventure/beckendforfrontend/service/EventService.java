@@ -2,10 +2,14 @@ package eventure.beckendforfrontend.service;
 
 import eventure.beckendforfrontend.model.dto.CategoryDto;
 import eventure.beckendforfrontend.model.dto.EventDto;
+import eventure.beckendforfrontend.model.dto.ParticipantDto;
+import eventure.beckendforfrontend.model.dto.StatusUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -57,5 +61,28 @@ public class EventService {
                 new ParameterizedTypeReference<List<EventDto>>() {}
         );
         return response.getBody();
+    }
+    public List<ParticipantDto> getParticipants(Long eventId) {
+        ResponseEntity<List<ParticipantDto>> response = restTemplate.exchange(
+                eventServiceUrl + "/api/v1/events/" + eventId + "/participants",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<ParticipantDto>>() {}
+        );
+        return response.getBody();
+    }
+
+    public void changeParticipantStatus(Long eventId, Long participantId, StatusUpdateDto dto, Long organizerId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-User-Id", String.valueOf(organizerId));
+
+        HttpEntity<StatusUpdateDto> entity = new HttpEntity<>(dto, headers);
+
+        restTemplate.exchange(
+                eventServiceUrl + "/api/v1/events/" + eventId + "/participants/" + participantId,
+                HttpMethod.PUT,
+                entity,
+                Void.class
+        );
     }
 }
