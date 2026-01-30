@@ -4,6 +4,7 @@ import eventure.beckendforfrontend.model.dto.ParticipantDto;
 import eventure.beckendforfrontend.model.dto.RateEventDto;
 import eventure.beckendforfrontend.model.dto.StatusUpdateDto;
 import eventure.beckendforfrontend.service.EventService;
+import eventure.beckendforfrontend.utills.SecurityHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+    private final SecurityHelper securityHelper;
 
     @GetMapping("/{eventId}/participants")
     public ResponseEntity<List<ParticipantDto>> getParticipants(@PathVariable Long eventId) {
@@ -40,24 +42,10 @@ public class EventController {
             @RequestBody RateEventDto request,
             HttpServletRequest httpRequest
     ) {
-        Long userId = extractUserId(httpRequest);
+        Long userId = securityHelper.extractUserId(httpRequest);
 
         eventService.rateEvent(eventId, request.getScore(), userId);
 
         return ResponseEntity.ok().build();
-    }
-
-    private Long extractUserId(HttpServletRequest request) {
-        String header = request.getHeader("X-User-Id");
-
-        if (header != null && !header.isBlank()) {
-            try {
-                return Long.parseLong(header);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Invalid User ID format in header");
-            }
-        }
-
-        throw new SecurityException("User ID is missing. Please add 'X-User-Id' header.");
     }
 }
