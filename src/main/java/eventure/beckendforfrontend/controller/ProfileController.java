@@ -3,6 +3,7 @@ package eventure.beckendforfrontend.controller;
 import eventure.beckendforfrontend.model.dto.ProfileRequestDTO;
 import eventure.beckendforfrontend.model.dto.ProfileResponseDTO;
 import eventure.beckendforfrontend.model.dto.ProfileSummaryDto;
+import eventure.beckendforfrontend.service.EventService;
 import eventure.beckendforfrontend.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final EventService eventService;
 
     @GetMapping("/{userId}/summary")
     public ResponseEntity<ProfileSummaryDto> getUserProfileSummary(@PathVariable Long userId) {
@@ -54,5 +56,11 @@ public class ProfileController {
     @GetMapping("/{userId}")
     public ResponseEntity<ProfileResponseDTO> getProfile(@PathVariable Long userId) {
         return ResponseEntity.ok(profileService.getProfileByUserId(userId));
+    }
+
+    @GetMapping("/{userId}/rating")
+    public ResponseEntity<Double> getUserRating(@PathVariable Long userId) {
+        Double rating = eventService.getOrganizerRating(userId);
+        return ResponseEntity.ok(rating);
     }
 }
