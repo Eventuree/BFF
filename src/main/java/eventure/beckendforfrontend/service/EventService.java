@@ -1,9 +1,6 @@
 package eventure.beckendforfrontend.service;
 
-import eventure.beckendforfrontend.model.dto.CategoryDto;
-import eventure.beckendforfrontend.model.dto.EventDto;
-import eventure.beckendforfrontend.model.dto.ParticipantDto;
-import eventure.beckendforfrontend.model.dto.StatusUpdateDto;
+import eventure.beckendforfrontend.model.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -84,5 +81,32 @@ public class EventService {
                 entity,
                 Void.class
         );
+    }
+
+    public void rateEvent(Long eventId, Integer score, Long userId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-User-Id", String.valueOf(userId));
+
+        RateEventDto body = new RateEventDto();
+        body.setScore(score);
+
+        HttpEntity<RateEventDto> requestEntity = new HttpEntity<>(body, headers);
+
+        restTemplate.exchange(
+                eventServiceUrl + "/api/v1/events/" + eventId + "/rate",
+                HttpMethod.POST,
+                requestEntity,
+                Void.class
+        );
+    }
+
+    public Double getOrganizerRating(Long organizerId) {
+        ResponseEntity<Double> response = restTemplate.exchange(
+                eventServiceUrl + "/api/v1/ratings/organizer/" + organizerId,
+                HttpMethod.GET,
+                null,
+                Double.class
+        );
+        return response.getBody();
     }
 }

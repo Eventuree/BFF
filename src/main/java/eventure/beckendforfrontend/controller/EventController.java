@@ -1,8 +1,11 @@
 package eventure.beckendforfrontend.controller;
 
 import eventure.beckendforfrontend.model.dto.ParticipantDto;
+import eventure.beckendforfrontend.model.dto.RateEventDto;
 import eventure.beckendforfrontend.model.dto.StatusUpdateDto;
 import eventure.beckendforfrontend.service.EventService;
+import eventure.beckendforfrontend.utills.SecurityHelper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+    private final SecurityHelper securityHelper;
 
     @GetMapping("/{eventId}/participants")
     public ResponseEntity<List<ParticipantDto>> getParticipants(@PathVariable Long eventId) {
@@ -29,6 +33,19 @@ public class EventController {
             @RequestHeader("X-User-Id") Long organizerId
     ) {
         eventService.changeParticipantStatus(eventId, userId, statusDto, organizerId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{eventId}/rate")
+    public ResponseEntity<Void> rateEvent(
+            @PathVariable Long eventId,
+            @RequestBody RateEventDto request,
+            HttpServletRequest httpRequest
+    ) {
+        Long userId = securityHelper.extractUserId(httpRequest);
+
+        eventService.rateEvent(eventId, request.getScore(), userId);
+
         return ResponseEntity.ok().build();
     }
 }
