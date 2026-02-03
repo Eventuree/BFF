@@ -1,4 +1,4 @@
-package eventure.beckendforfrontend.utills;
+package eventure.beckendforfrontend.utils;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
