@@ -3,7 +3,7 @@ package eventure.beckendforfrontend.service;
 import eventure.beckendforfrontend.model.dto.ProfileRequestDTO;
 import eventure.beckendforfrontend.model.dto.ProfileResponseDTO;
 import eventure.beckendforfrontend.model.dto.ProfileSummaryDto;
-import eventure.beckendforfrontend.utills.MultipartRequestBuilder;
+import eventure.beckendforfrontend.utils.MultipartRequestBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
