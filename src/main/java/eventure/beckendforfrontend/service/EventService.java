@@ -104,4 +104,32 @@ public class EventService {
         );
         return response.getBody();
     }
+
+    public Object getArchivedEvents(Long userId, String type, int page, int limit) {
+        StringBuilder urlBuilder = new StringBuilder(eventServiceUrl)
+                .append("/api/v1/events/archive")
+                .append("?page=").append(page)
+                .append("&limit=").append(limit);
+
+        if (type != null && !type.isBlank()) {
+            urlBuilder.append("&type=").append(type);
+        }
+
+        String url = urlBuilder.toString();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-User-Id", String.valueOf(userId));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Object> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                Object.class
+        );
+
+        return response.getBody();
+    }
 }
