@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProfileSummaryDto {
     String name;     // firstName + lastName
-    String username;
+    String email;
     String avatarUrl;
 }

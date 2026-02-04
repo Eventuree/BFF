@@ -20,7 +20,7 @@ public class HomeController {
     private final EventService eventService;
 
     @GetMapping("/api/home")
-    public ResponseEntity<HomePageDTO> getHomePageData(@PathVariable Long id) {
+    public ResponseEntity<HomePageDTO> getHomePageData() {
         CompletableFuture<List<EventDto>> trendingFuture =
                 CompletableFuture.supplyAsync(() -> eventService.getTrendingEvents());
 
