@@ -1,5 +1,6 @@
 package eventure.beckendforfrontend.model.dto;
 
+import eventure.beckendforfrontend.model.enums.EventStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,11 +18,9 @@ public class EventDto {
     private String title;
     private String description;
 
-    private String status;
+    private EventStatus status;
 
     private LocalDateTime eventDate;
-
-    private LocalDateTime originalEventDate;
 
     private Integer maxParticipants;
 
