@@ -49,4 +49,16 @@ public class EventController {
         eventService.rateEvent(eventId, request.getScore(), userId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/archive")
+    public ResponseEntity<Object> getArchivedEvents(
+            @RequestParam(required = false) String type,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            HttpServletRequest request
+    ) {
+        Long userId = securityHelper.extractUserId(request);
+
+        return ResponseEntity.ok(eventService.getArchivedEvents(userId, type, page, limit));
+    }
 }
